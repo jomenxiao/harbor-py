@@ -3,6 +3,7 @@
 import json
 import logging
 import requests
+from urllib import quote
 
 logging.basicConfig(level=logging.INFO)
 
@@ -308,7 +309,8 @@ class HarborClient(object):
     # Get /repositories/tags
     def get_repository_tags(self, repo_name):
         result = None
-        path = '%s://%s/api/repositories/tags?repo_name=%s' % (
+        repo_name = quote(repo_name, safe='')
+        path = '%s://%s/api/repositories/%s/tags' % (
             self.protocol, self.host, repo_name)
         response = requests.get(path,
                                 cookies={'beegosessionID': self.session_id})
